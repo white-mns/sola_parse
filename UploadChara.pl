@@ -47,6 +47,7 @@ sub Main {
     }
     if (ConstData::EXE_CHARA) {
         &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "statuses",     "./output/chara/status_");
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "set_classes",  "./output/chara/class_");
     #    &UploadResult($upload, $date, ConstData::EXE_CHARA_SKILL,  "skills",       "./output/chara/skill_");
     }
         &UploadResult($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
