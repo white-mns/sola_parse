@@ -21,6 +21,7 @@ require "./source/chara/Name.pm";
 require "./source/chara/Status.pm";
 require "./source/chara/Class.pm";
 require "./source/chara/Equip.pm";
+require "./source/chara/Skill.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -54,6 +55,7 @@ sub Init{
     if (ConstData::EXE_CHARA_STATUS) { $self->{DataHandlers}{Status} = Status->new();}
     if (ConstData::EXE_CHARA_CLASS)  { $self->{DataHandlers}{Class}  = Class->new();}
     if (ConstData::EXE_CHARA_EQUIP)  { $self->{DataHandlers}{Equip}  = Equip->new();}
+    if (ConstData::EXE_CHARA_SKILL)  { $self->{DataHandlers}{Skill}  = Skill->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -121,8 +123,10 @@ sub ParsePage{
     my $tree = HTML::TreeBuilder->new;
     $tree->parse($content);
 
-    my $title_span_nodes  = &GetNode::GetNode_Tag_Attr("span",  "class", "title",  \$tree);
-    my $table_nodes       = &GetNode::GetNode_Tag     ("table",                    \$tree);
+    my $title_span_nodes = &GetNode::GetNode_Tag_Attr("span",  "class", "title",       \$tree);
+    my $table_nodes      = &GetNode::GetNode_Tag     ("table",                         \$tree);
+    my $div_pve_nodes    = &GetNode::GetNode_Tag_Attr("div",   "id",    "pve_content", \$tree);
+    my $div_pvp_nodes    = &GetNode::GetNode_Tag_Attr("div",   "id",    "pvp_content", \$tree);
     
     if (!scalar(@$title_span_nodes)) {return;}
     
@@ -131,6 +135,7 @@ sub ParsePage{
     if (exists($self->{DataHandlers}{Status})) {$self->{DataHandlers}{Status}->GetData($e_no, $table_nodes)};
     if (exists($self->{DataHandlers}{Class}))  {$self->{DataHandlers}{Class}->GetData ($e_no, $table_nodes)};
     if (exists($self->{DataHandlers}{Equip}))  {$self->{DataHandlers}{Equip}->GetData ($e_no, $table_nodes)};
+    if (exists($self->{DataHandlers}{Skill}))  {$self->{DataHandlers}{Skill}->GetData ($e_no, $$div_pve_nodes[0], $$div_pvp_nodes[0])};
 
     $tree = $tree->delete;
 }
