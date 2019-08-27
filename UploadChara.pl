@@ -45,13 +45,10 @@ sub Main {
         #&UploadData($upload, ConstData::EXE_DATA_SKILL_DATA,       "skill_data",   "./output/data/skill_data.csv");
         &UploadData($upload, ConstData::EXE_CHARA_NAME,            "names",        "./output/chara/name.csv");
     }
-    #if (ConstData::EXE_CHARA) {
-    #    &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "statuses",     "./output/chara/status_");
+    if (ConstData::EXE_CHARA) {
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "statuses",     "./output/chara/status_");
     #    &UploadResult($upload, $date, ConstData::EXE_CHARA_SKILL,  "skills",       "./output/chara/skill_");
-    #}
-    #if (ConstData::EXE_NEW) {
-    #     &UploadResult($upload, $date, ConstData::EXE_NEW_SKILL,   "new_skills",    "./output/new/skill_");
-    #}
+    }
         &UploadResult($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
     print "date:$date\n";
     return;
