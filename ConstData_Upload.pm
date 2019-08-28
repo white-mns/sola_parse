@@ -26,5 +26,10 @@ use warnings;
         use constant EXE_CHARA_CLASS             => 1;
         use constant EXE_CHARA_EQUIP             => 1;
         use constant EXE_CHARA_SKILL             => 1;
+    use constant EXE_BATTLE_LIST          => 1;
+        use constant EXE_BATTLE_LIST_AP          => 1;
+        use constant EXE_BATTLE_LIST_PARTY       => 1;
+    use constant EXE_BATTLE               => 1;
+        use constant EXE_BATTLE_NUCLEAR          => 1;
 
 1;
