@@ -109,6 +109,7 @@ sub GetTurnData{
     my $turn = shift;
 
     my @right_nodes = $turn_node->right->right;
+    my $right_index = 0;
 
     foreach my $action_node (@right_nodes) {
         if ($action_node =~ /HASH/ && $action_node->attr("class") && $action_node->attr("class") eq "status_box") {
@@ -116,8 +117,10 @@ sub GetTurnData{
         }
 
         if ($action_node =~ /HASH/ && $action_node->tag("b")) {
-            $self->GetNuclearData($action_node, $turn);
+            $self->GetNuclearData(\@right_nodes, $right_index,$turn);
         }
+
+        $right_index += 1;
 
     }
 }
@@ -130,22 +133,19 @@ sub GetTurnData{
 #-----------------------------------#
 sub GetNuclearData{
     my $self  = shift;
-    my $b_node  = shift;
+    my $nodes  = shift;
+    my $skill_name_index = shift;
     my $turn = shift;
 
-    my $left = $b_node->left;
-    my $right = $b_node->right;
+    my $left = $$nodes[$skill_name_index - 1];
+    my $right = $$nodes[$skill_name_index + 1];
 
     if ($left ne "の" || $right ne "！") { return; }
-    $left = "";
-    $right = "";
 
-    my @right_nodes = $b_node->right;
+    my $skill_name = $$nodes[$skill_name_index]->as_text;
 
-    my $skill_name = $b_node->as_text;
-
-    if ($right_nodes[1] =~ /HASH/ && $right_nodes[1]->tag eq "font") {
-        my $orig_name = $right_nodes[1]->as_text;
+    if ($$nodes[$skill_name_index + 2] =~ /HASH/ && $$nodes[$skill_name_index + 2]->tag eq "font") {
+        my $orig_name = $$nodes[$skill_name_index + 2]->as_text;
         if ($orig_name =~ /（/ && $orig_name !~ /消費SP/) {
             $orig_name =~ s/（//;
             $orig_name =~ s/）//;
@@ -158,22 +158,21 @@ sub GetNuclearData{
 
     my ($skill_id, $user_name, $max_damage, $total_damage) = ("", 0, 0);
 
-    my @left_nodes = $b_node->left;
-    my $left_size = scalar(@left_nodes);
-    $user_name = $left_nodes[$left_size - 2]->as_text;
-    @left_nodes = ();
+    $user_name = $$nodes[$skill_name_index - 2]->as_text;
     $skill_id = $self->{CommonDatas}{SkillData}->GetOrAddId(0, [$skill_name, 0, 0, 0, 0, "", 1]);
 
-    foreach my $right_node (@right_nodes) {
-        if ($right_node =~ /HASH/ && $right_node->attr("class") && $right_node->attr("class") eq "status_box") {
+    my $nodes_size = scalar(@$nodes);
+    for(my $i=$skill_name_index; $i<$nodes_size; $i++) {
+        my $after_node = $$nodes[$i];
+        if ($after_node =~ /HASH/ && $after_node->attr("class") && $after_node->attr("class") eq "status_box") {
             last;
         }
-        if ($right_node =~ /HASH/ && $right_node->attr("tag") && $right_node->attr("tag") eq "b") {
+        if ($after_node =~ /HASH/ && $after_node->attr("tag") && $after_node->attr("tag") eq "b") {
             last;
         }
 
-        if ($right_node =~ /HASH/ && $right_node->attr("class") && $right_node->attr("class") eq "damagecut") {
-            my @damage_data = $right_node->content_list;
+        if ($after_node =~ /HASH/ && $after_node->attr("class") && $after_node->attr("class") eq "damagecut") {
+            my @damage_data = $after_node->content_list;
             my $damage = $damage_data[0];
 
             $total_damage += $damage;
