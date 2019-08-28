@@ -2,21 +2,16 @@
 
 CURENT=`pwd`	#実行ディレクトリの保存
 cd `dirname $0`	#解析コードのあるディレクトリで作業をする
-START_CURRENT=`pwd`
 
 #------------------------------------------------------------------
 # 更新回数、再更新番号の定義確認、設定
 
-./chara_execute.sh
+START_NO=$1
+END_NO=$2
 
-cd $START_CURRENT  #実行ディレクトリに戻る
+# ファイル解析・アップロード
 
-./battle_execute.sh
-
-cd $START_CURRENT
-
-#./battle.sh
-
-cd $START_CURRENT
+perl ./GetBattleData.pl      $START_NO $END_NO
+perl ./UploadBattle.pl
 
 cd $CURENT  #元のディレクトリに戻る
