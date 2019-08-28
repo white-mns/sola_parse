@@ -6,6 +6,7 @@
 
 package IO;
 use Cwd;
+use JSON;
 
 #-----------------------------------#
 #
@@ -85,7 +86,7 @@ sub FileRead{
 
 #-----------------------------------#
 #
-#        読み込み
+#        gz読み込み
 #
 #-----------------------------------#
 sub GzipRead{
@@ -100,6 +101,23 @@ sub GzipRead{
     return $content;
 }
 
+#-----------------------------------#
+#
+#        JSON読み込み
+#
+#-----------------------------------#
+sub JSONRead{
+    my($fileName) = @_;
+    
+    open(FILEHANDLE , " < $fileName");
+    my @in = <FILEHANDLE>;
+    close FILEHANDLE;
+    
+    my $content = join('', @in);
+    my $json = decode_json($content);
+    
+    return $json;
+}
 
 #-----------------------------------#
 #
