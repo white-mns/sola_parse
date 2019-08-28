@@ -115,6 +115,9 @@ sub GetNameData{
     @lefts = reverse(@lefts);
 
     $name = $lefts[1]->as_text;
+    if ($name !~ /No.\d+ /) { # 開始初期レイアウト
+        $name = $lefts[0]->as_text;
+    }
 
     $name =~ s/No.\d+ //g;
     @lefts = reverse(@lefts);
