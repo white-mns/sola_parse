@@ -51,6 +51,9 @@ sub Main {
         &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "equips",       "./output/chara/equip_");
         &UploadResult($upload, $date, ConstData::EXE_CHARA_SKILL,  "skills",       "./output/chara/skill_");
     }
+    if (ConstData::EXE_NEW) {
+         &UploadResult($upload, $date, ConstData::EXE_NEW_SKILL,   "new_skills",    "./output/new/skill_");
+    }
         &UploadResult($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
     print "date:$date\n";
     return;
