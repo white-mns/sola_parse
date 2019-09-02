@@ -10,6 +10,7 @@ use strict;
 use warnings;
 require "./source/lib/Store_Data.pm";
 require "./source/lib/Store_HashData.pm";
+require "./source/new/NewSkill.pm";
 use ConstData;        #定数呼び出し
 use source::lib::GetNode;
 
@@ -39,6 +40,7 @@ sub Init{
     
     #初期化
     $self->{Datas}{Data}  = StoreData->new();
+    $self->{Datas}{New}   = NewSkill->new();
     my $header_list = "";
    
     $header_list = [
@@ -51,6 +53,7 @@ sub Init{
     ];
 
     $self->{Datas}{Data}->Init($header_list);
+    $self->{Datas}{New}->Init($self->{Date}, $self->{CommonDatas});
     
     #出力ファイル設定
     $self->{Datas}{Data}->SetOutputName( "./output/chara/skill_" . $self->{Date} . ".csv" );
@@ -142,6 +145,8 @@ sub GetSkillData{
 
         $skill_id = $self->{CommonDatas}{SkillData}->GetOrAddId(1, [$skill_name, $range, $cost_id, $sp, $timing_id, $text, $is_artifact]);
         $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $battle_type, $set_no, $skill_id, $name, $self->{Date}) ));
+        
+        $self->{Datas}{New}->RecordNewSkillData($self->{Date}, $skill_id);
     }
     return;
 }

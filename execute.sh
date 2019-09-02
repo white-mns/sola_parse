@@ -11,11 +11,15 @@ START_CURRENT=`pwd`
 
 cd $START_CURRENT  #実行ディレクトリに戻る
 
-./battle_execute.sh
+perl ./_DeleteUpdatedCheck.pl
+
+./battle_list_execute.sh
 
 cd $START_CURRENT
 
-#./battle.sh
+perl ./_DeleteUpdatedCheck.pl
+
+./battle_execute.sh
 
 cd $START_CURRENT
 

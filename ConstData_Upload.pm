@@ -31,5 +31,7 @@ use warnings;
         use constant EXE_BATTLE_LIST_PARTY       => 1;
     use constant EXE_BATTLE               => 1;
         use constant EXE_BATTLE_NUCLEAR          => 1;
+    use constant EXE_NEW                  => 1;
+        use constant EXE_NEW_SKILL               => 1;
 
 1;
