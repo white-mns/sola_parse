@@ -156,7 +156,7 @@ sub GetNuclearData{
 
     if ($skill_name ne "★デスニューク") {return;}
 
-    my ($skill_id, $user_name, $max_damage, $total_damage) = ("", 0, 0);
+    my ($skill_id, $user_name, $max_damage, $total_damage) = ("", 0, 0, 0);
 
     $user_name = $$nodes[$skill_name_index - 2]->as_text;
     $skill_id = $self->{CommonDatas}{SkillData}->GetOrAddId(0, [$skill_name, 0, 0, 0, 0, "", 1]);
@@ -174,6 +174,7 @@ sub GetNuclearData{
         if ($after_node =~ /HASH/ && $after_node->attr("class") && $after_node->attr("class") eq "damagecut") {
             my @damage_data = $after_node->content_list;
             my $damage = $damage_data[0];
+            $damage = ($damage =~ /HASH/) ? $damage->as_text : $damage;
 
             $total_damage += $damage;
 
