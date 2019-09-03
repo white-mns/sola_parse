@@ -174,6 +174,7 @@ sub GetNuclearData{
         if ($after_node =~ /HASH/ && $after_node->attr("class") && $after_node->attr("class") eq "damagecut") {
             my @damage_data = $after_node->content_list;
             my $damage = $damage_data[0];
+            $damage = ($damage =~ /HASH/) ? $damage->as_text : $damage;
 
             $total_damage += $damage;
 
