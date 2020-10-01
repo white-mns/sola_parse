@@ -14,6 +14,8 @@ require "./source/Battle.pm";
 use strict;
 use warnings;
 use HTML::TreeBuilder;
+use FindBin qw($Bin);
+use lib "$Bin";
 use ConstData;        #定数呼び出し
 
 # 変数の初期化    ---------------#
