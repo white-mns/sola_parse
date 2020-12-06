@@ -43,18 +43,19 @@ sub Main {
     $upload->DeleteSameDate("uploaded_checks", $date);
 
     if (ConstData::EXE_DATA) {
-        &UploadData($upload, ConstData::EXE_DATA_PROPER_NAME,      "proper_names", "./output/data/proper_name.csv");
-        &UploadData($upload, ConstData::EXE_DATA_SKILL_DATA,       "skill_data",   "./output/data/skill_data.csv");
-        &UploadData($upload, ConstData::EXE_CHARA_NAME,            "names",        "./output/chara/name.csv");
+        &UploadData($upload, ConstData::EXE_DATA_PROPER_NAME,      "proper_names",   "./output/data/proper_name.csv");
+        &UploadData($upload, ConstData::EXE_DATA_SKILL_DATA,       "skill_data",     "./output/data/skill_data.csv");
+        &UploadData($upload, ConstData::EXE_CHARA_NAME,            "names",          "./output/chara/name.csv");
     }
     if (ConstData::EXE_CHARA) {
-        &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "statuses",     "./output/chara/status_");
-        &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "set_classes",  "./output/chara/class_");
-        &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "equips",       "./output/chara/equip_");
-        &UploadResult($upload, $date, ConstData::EXE_CHARA_SKILL,  "skills",       "./output/chara/skill_");
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "statuses",       "./output/chara/status_");
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "status_dummies", "./output/chara/status_dummy_");
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "set_classes",    "./output/chara/class_");
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "equips",         "./output/chara/equip_");
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_SKILL,  "skills",         "./output/chara/skill_");
     }
     if (ConstData::EXE_NEW) {
-         &UploadResult($upload, $date, ConstData::EXE_NEW_SKILL,   "new_skills",    "./output/new/skill_");
+         &UploadResult($upload, $date, ConstData::EXE_NEW_SKILL,   "new_skills",     "./output/new/skill_");
     }
         &UploadResult($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
     print "date:$date\n";

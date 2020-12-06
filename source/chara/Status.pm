@@ -39,6 +39,7 @@ sub Init{
     
     #初期化
     $self->{Datas}{Data}  = StoreData->new();
+    $self->{Datas}{Dummy} = StoreData->new();
     my $header_list = "";
    
     $header_list = [
@@ -60,9 +61,17 @@ sub Init{
     ];
 
     $self->{Datas}{Data}->Init($header_list);
+
+    $header_list = [
+                "e_no",
+                "created_at",
+    ];
+
+    $self->{Datas}{Dummy}->Init($header_list);
     
     #出力ファイル設定
-    $self->{Datas}{Data}->SetOutputName( "./output/chara/status_" . $self->{Date} . ".csv" );
+    $self->{Datas}{Data}-> SetOutputName( "./output/chara/status_" .      $self->{Date} . ".csv" );
+    $self->{Datas}{Dummy}->SetOutputName( "./output/chara/status_dummy_" . $self->{Date} . ".csv" );
     return;
 }
 
@@ -186,6 +195,7 @@ sub GetStatusData{
     }
 
     $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $str, $vit, $sense, $agi, $mag, $int, $will, $charm, $line, $role_id, $used_ap, $used_stp, $goodness, $self->{Date}) ));
+    $self->{Datas}{Dummy}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $self->{Date}) ));
 
     return;
 }
