@@ -58,7 +58,7 @@ sub Main {
         #&UploadResult($upload, ConstData::EXE_BATTLE_ENEMY, "enemies",   "./output/battle/enemy.csv", "ap_no");
         #&UploadResult($upload, ConstData::EXE_BATTLE_DROP,  "drops",     "./output/battle/drop.csv",  "ap_no");
     }
-        #&UploadEnd($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
+        &UploadEnd($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
     print "date:$date\n";
     return;
 }

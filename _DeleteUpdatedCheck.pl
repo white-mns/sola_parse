@@ -35,7 +35,14 @@ $timeChecker = undef;
 
 sub Main {
     my $input_date = $ARGV[0];
-    my $date = substr($input_date, 0, 4)."-".substr($input_date, 4, 2)."-".substr($input_date, 6, 2);
+
+    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime;
+    my $date = ($year+1900) . "-" . sprintf("%02d", $mon + 1) . "-" . sprintf("%02d",$mday);
+
+    if ($input_date) {
+        $date = substr($input_date, 0, 4)."-".substr($input_date, 4, 2)."-".substr($input_date, 6, 2);
+    }
+
     my $upload = Upload->new();
 
     $upload->DBConnect();
