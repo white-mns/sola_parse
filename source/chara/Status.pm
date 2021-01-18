@@ -35,7 +35,7 @@ sub new {
 #-----------------------------------#
 sub Init{
     my $self = shift;
-    ($self->{Date}, $self->{CommonDatas}) = @_;
+    ($self->{Date}, $self->{DateTime}, $self->{CommonDatas}) = @_;
     
     #初期化
     $self->{Datas}{Data}  = StoreData->new();
@@ -58,6 +58,7 @@ sub Init{
                 "used_stp",
                 "goodness",
                 "created_at",
+                "updated_at",
     ];
 
     $self->{Datas}{Data}->Init($header_list);
@@ -194,7 +195,7 @@ sub GetStatusData{
         }
     }
 
-    $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $str, $vit, $sense, $agi, $mag, $int, $will, $charm, $line, $role_id, $used_ap, $used_stp, $goodness, $self->{Date}) ));
+    $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $str, $vit, $sense, $agi, $mag, $int, $will, $charm, $line, $role_id, $used_ap, $used_stp, $goodness, $self->{Date}, $self->{DateTime}) ));
     $self->{Datas}{Dummy}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $self->{Date}) ));
 
     return;

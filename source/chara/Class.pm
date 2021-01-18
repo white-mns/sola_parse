@@ -35,7 +35,7 @@ sub new {
 #-----------------------------------#
 sub Init{
     my $self = shift;
-    ($self->{Date}, $self->{CommonDatas}) = @_;
+    ($self->{Date}, $self->{DateTime}, $self->{CommonDatas}) = @_;
     
     #初期化
     $self->{Datas}{Data}  = StoreData->new();
