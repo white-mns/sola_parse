@@ -48,7 +48,7 @@ sub new {
 #-----------------------------------#
 sub Init{
     my $self = shift;
-    ($self->{Date}, $self->{Dummy}, $self->{CommonDatas}) = @_;
+    ($self->{Date}, $self->{DateTime}, $self->{CommonDatas}) = @_;
 
     #インスタンス作成
     if (ConstData::EXE_CHARA_NAME)   { $self->{DataHandlers}{Name}   = Name->new();}
@@ -59,7 +59,7 @@ sub Init{
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
-        $object->Init($self->{Date}, $self->{CommonDatas});
+        $object->Init($self->{Date}, $self->{DateTime}, $self->{CommonDatas});
     }
     
     return;

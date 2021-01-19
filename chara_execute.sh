@@ -7,13 +7,13 @@ cd `dirname $0`	#解析コードのあるディレクトリで作業をする
 # 引数で設定された日付の確認、設定
 
 if [ -n "$1" ]; then
-    if [ "`date +'%Y%m%d' -d $1 2> /dev/null`" = $1 ]; then
-        DATE=`date +"%Y%m%d" -d $1`
+    if [ "`date +'%Y/%m/%d %H' -d "$1" 2> /dev/null`" = "$1" ]; then # 日時指定実行では "2021/01/01 04" のフォーマットで指定
+        DATE=`date +"%Y%m%d%H" -d "$1"`
     else
-        DATE=`date +"%Y%m%d"`
+        DATE=`date +"%Y%m%d%H"`
     fi
 else
-    DATE=`date +"%Y%m%d"`
+    DATE=`date +"%Y%m%d%H"`
 fi
 
 #------------------------------------------------------------------

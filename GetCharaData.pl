@@ -15,6 +15,8 @@ require "./source/UploadedCheck.pm";
 use strict;
 use warnings;
 use HTML::TreeBuilder;
+use FindBin qw($Bin);
+use lib "$Bin";
 use ConstData;        #定数呼び出し
 
 # 変数の初期化    ---------------#
@@ -36,7 +38,8 @@ $timeChecker = undef;
 
 sub Main{
     my $input_date = $ARGV[0];
-    my $date = substr($input_date, 0, 4)."-".substr($input_date, 4, 2)."-".substr($input_date, 6, 2);
+    my $date     = substr($input_date, 0, 4)."-".substr($input_date, 4, 2)."-".substr($input_date, 6, 2);
+    my $datetime = substr($input_date, 0, 4)."-".substr($input_date, 4, 2)."-".substr($input_date, 6, 2)." ".substr($input_date, 8, 2).":00";
 
     my @objects;        #探索するデータ項目の登録
     my %common_datas;
@@ -45,7 +48,7 @@ sub Main{
                                {push(@objects, UploadedCheck->new());} #データ更新状況チェック用データ作成
     if (ConstData::EXE_CHARA)  {push(@objects, Character->new());}     #キャラページ読み込み
 
-    &Init(\@objects, $date, \%common_datas);
+    &Init(\@objects, $date, $datetime, \%common_datas);
     &Execute(\@objects);
     &Output(\@objects);
 }
@@ -56,10 +59,10 @@ sub Main{
 #    引数｜更新番号、再更新番号
 #-----------------------------------#
 sub Init{
-    my ($objects, $date, $common_datas)    = @_;
+    my ($objects, $date, $datetime, $common_datas)    = @_;
     
     foreach my $object( @$objects) {
-        $object->Init($date, "", $common_datas);
+        $object->Init($date, $datetime, $common_datas);
     }
     return;
 }

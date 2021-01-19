@@ -16,6 +16,8 @@ use HTTP::Request;
 use HTTP::Response;
 
 # 変数の初期化    ---------------#
+use FindBin qw($Bin);
+use lib "$Bin";
 use ConstData_Upload;        #定数呼び出し
 
 my $timeChecker = TimeChecker->new();
@@ -56,7 +58,7 @@ sub Main {
         #&UploadResult($upload, ConstData::EXE_BATTLE_ENEMY, "enemies",   "./output/battle/enemy.csv", "ap_no");
         #&UploadResult($upload, ConstData::EXE_BATTLE_DROP,  "drops",     "./output/battle/drop.csv",  "ap_no");
     }
-        #&UploadEnd($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
+        &UploadEnd($upload, $date, 1,                           "uploaded_checks", "./output/etc/uploaded_check_");
     print "date:$date\n";
     return;
 }

@@ -76,6 +76,7 @@ sub Upload {
                 @data_que =();
             }            
         }
+
         &InsertDB($self,\@data_que,$for_table);
     }
     
@@ -126,9 +127,8 @@ sub InsertDB{
     
     if (!scalar(@$insert_data)) {return;}
     
-    eval {
-        $self->{DBI}->insert($insert_data, table     => $table_name);
-    };
+    $self->{DBI}->insert($insert_data, table => $table_name, bulk_insert => 1);
+
     if ( $@ ){
         if ( DBI::errstr &&  DBI::errstr =~ "for key 'PRIMARY'" ){
             my $errMes = "[一意制約]\n";
