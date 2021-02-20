@@ -103,7 +103,7 @@ sub GetSkillData{
         my @skill_name_nodes = $$th_nodes[1]->content_list;
         my $skill_name = "";
 
-        if (scalar(@skill_name_nodes) > 1) {
+        if (scalar(@skill_name_nodes) > 1 && $skill_name_nodes[2] && $skill_name_nodes[2] =~ /HASH/) {
             $name = $skill_name_nodes[0];
             $skill_name = $skill_name_nodes[2]->as_text;
             $skill_name =~ s/[\(]//;
