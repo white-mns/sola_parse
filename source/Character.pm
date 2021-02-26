@@ -125,10 +125,12 @@ sub ParsePage{
     my $tree = HTML::TreeBuilder->new;
     $tree->parse($content);
 
-    my $title_span_nodes = &GetNode::GetNode_Tag_Attr("span",  "class", "title",       \$tree);
-    my $table_nodes      = &GetNode::GetNode_Tag     ("table",                         \$tree);
-    my $div_pve_nodes    = &GetNode::GetNode_Tag_Attr("div",   "id",    "pve_content", \$tree);
-    my $div_pvp_nodes    = &GetNode::GetNode_Tag_Attr("div",   "id",    "pvp_content", \$tree);
+    my $title_span_nodes    = &GetNode::GetNode_Tag_Attr("span",  "class", "title",        \$tree);
+    my $table_nodes         = &GetNode::GetNode_Tag     ("table",                          \$tree);
+    my $div_pve_nodes       = &GetNode::GetNode_Tag_Attr("div", "id", "pve_content",       \$tree);
+    my $div_pvp_nodes       = &GetNode::GetNode_Tag_Attr("div", "id", "pvp_content",       \$tree);
+    my $div_tale_nodes      = &GetNode::GetNode_Tag_Attr("div", "id", "tale_content",      \$tree);
+    my $div_challenge_nodes = &GetNode::GetNode_Tag_Attr("div", "id", "challenge_content", \$tree);
     
     if (!scalar(@$title_span_nodes)) {return;}
     
@@ -137,7 +139,7 @@ sub ParsePage{
     if (exists($self->{DataHandlers}{Status})) {$self->{DataHandlers}{Status}->GetData($e_no, $table_nodes)};
     if (exists($self->{DataHandlers}{Class}))  {$self->{DataHandlers}{Class}->GetData ($e_no, $table_nodes)};
     if (exists($self->{DataHandlers}{Equip}))  {$self->{DataHandlers}{Equip}->GetData ($e_no, $table_nodes)};
-    if (exists($self->{DataHandlers}{Skill}))  {$self->{DataHandlers}{Skill}->GetData ($e_no, $$div_pve_nodes[0], $$div_pvp_nodes[0])};
+    if (exists($self->{DataHandlers}{Skill}))  {$self->{DataHandlers}{Skill}->GetData ($e_no, $$div_pve_nodes[0], $$div_pvp_nodes[0], $$div_tale_nodes[0], $$div_challenge_nodes[0])};
     if (exists($self->{DataHandlers}{Title}))  {$self->{DataHandlers}{Title}->GetData ($e_no, $$title_span_nodes[0])};
 
     $tree = $tree->delete;

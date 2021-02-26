@@ -70,11 +70,15 @@ sub GetData{
     my $e_no    = shift;
     my $div_pve_node = shift;
     my $div_pvp_node = shift;
+    my $div_tale_node = shift;
+    my $div_challenge_node = shift;
     
     $self->{ENo} = $e_no;
 
     $self->GetSkillData($div_pve_node, 0);
     $self->GetSkillData($div_pvp_node, 1);
+    $self->GetSkillData($div_tale_node, 2);
+    $self->GetSkillData($div_challenge_node, 3);
     
     return;
 }
@@ -90,6 +94,8 @@ sub GetSkillData{
     my $battle_type = shift;
 
     my ($set_no, $skill_id, $name) = (0, 0, "");
+
+    unless ($div_node) {return;}
 
     my $tr_nodes = &GetNode::GetNode_Tag("tr",  \$div_node);
 
