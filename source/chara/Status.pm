@@ -57,6 +57,9 @@ sub Init{
                 "used_ap",
                 "used_stp",
                 "goodness",
+                "mel",
+                "medal",
+                "kudos",
                 "created_at",
                 "updated_at",
     ];
@@ -88,45 +91,29 @@ sub GetData{
     
     $self->{ENo} = $e_no;
 
-    my $used_node   = $self->GetUsedNode($table_nodes);
-    my $status_node = $self->GetStatusNode($table_nodes);
-    $self->GetStatusData($used_node, $status_node);
+    my $used_node   = $self->GetTableNodeFromFristTh($table_nodes, "消費済AP");
+    my $mel_node   = $self->GetTableNodeFromFristTh($table_nodes, "メル");
+    my $status_node = $self->GetTableNodeFromFristTh($table_nodes, "隊列");
+    $self->GetStatusData($used_node, $mel_node, $status_node);
     
     return;
 }
 
 #-----------------------------------#
-#    消費済データテーブル取得
+#    最初のセルの文字列を元にテーブル取得
 #------------------------------------
 #    引数｜テーブルノードリスト
 #-----------------------------------#
-sub GetUsedNode{
+sub GetTableNodeFromFristTh{
     my $self  = shift;
     my $table_nodes = shift;
+    my $first_text = shift;
     
     foreach my $table_node (@$table_nodes) {
         my $th_nodes = &GetNode::GetNode_Tag("th", \$table_node);
         my $th0_text =  $$th_nodes[0]->as_text;
 
-        if ($th0_text eq "消費済AP") { return $table_node; }
-    }
-    return;
-}
-
-#-----------------------------------#
-#    ステータスデータテーブル取得
-#------------------------------------
-#    引数｜テーブルノードリスト
-#-----------------------------------#
-sub GetStatusNode{
-    my $self  = shift;
-    my $table_nodes = shift;
-    
-    foreach my $table_node (@$table_nodes) {
-        my $th_nodes = &GetNode::GetNode_Tag("th", \$table_node);
-        my $th0_text =  $$th_nodes[0]->as_text;
-
-        if ($th0_text eq "隊列") { return $table_node; }
+        if ($th0_text eq $first_text) { return $table_node; }
     }
     return;
 }
@@ -140,11 +127,14 @@ sub GetStatusNode{
 sub GetStatusData{
     my $self  = shift;
     my $used_node = shift;
+    my $mel_node = shift;
     my $status_node = shift;
     my ($str, $vit, $sense, $agi, $mag, $int, $will, $charm, $line, $role_id) = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     my ($used_ap, $used_stp, $goodness) = (0, 0, 0);
+    my ($mel, $medal, $kudos) = (0, 0, 0);
 
     my $used_th_nodes   = &GetNode::GetNode_Tag("th", \$used_node);
+    my $mel_th_nodes   = &GetNode::GetNode_Tag("th", \$mel_node);
     my $status_th_nodes = &GetNode::GetNode_Tag("th", \$status_node);
     
     foreach my $node (@$used_th_nodes) {
@@ -157,7 +147,23 @@ sub GetStatusData{
 
         } elsif ($item eq "善行値") {
             $goodness = $node->right->as_text;
+        }
+    }
 
+    foreach my $node (@$mel_th_nodes) {
+        my $item =  $node->as_text;
+        if ($item eq "メル") {
+            $mel = $node->right->as_text;
+            $mel =~ s/mel//;
+            $mel =~ s/,//g;
+
+        } elsif ($item eq "ギルドメダル") {
+            $medal = $node->right->as_text;
+            $medal =~ s/枚//;
+
+        } elsif ($item eq "名声") {
+            $kudos = $node->right->as_text;
+            $kudos =~ s/点//;
         }
     }
 
@@ -195,7 +201,7 @@ sub GetStatusData{
         }
     }
 
-    $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $str, $vit, $sense, $agi, $mag, $int, $will, $charm, $line, $role_id, $used_ap, $used_stp, $goodness, $self->{Date}, $self->{DateTime}) ));
+    $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $str, $vit, $sense, $agi, $mag, $int, $will, $charm, $line, $role_id, $used_ap, $used_stp, $goodness, $mel, $medal, $kudos, $self->{Date}, $self->{DateTime}) ));
     $self->{Datas}{Dummy}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $self->{Date}) ));
 
     return;
