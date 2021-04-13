@@ -51,7 +51,7 @@ sub Main {
         &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "statuses",       "./output/chara/status_");
         &UploadResult($upload, $date, ConstData::EXE_CHARA_STATUS, "status_dummies", "./output/chara/status_dummy_");
         &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "set_classes",    "./output/chara/class_");
-        &UploadResult($upload, $date, ConstData::EXE_CHARA_CLASS,  "equips",         "./output/chara/equip_");
+        &UploadResult($upload, $date, ConstData::EXE_CHARA_EQUIP,  "equips",         "./output/chara/equip_");
         &UploadResult($upload, $date, ConstData::EXE_CHARA_SKILL,  "skills",         "./output/chara/skill_");
         &UploadResult($upload, $date, ConstData::EXE_CHARA_TITLE,  "titles",         "./output/chara/title_");
     }

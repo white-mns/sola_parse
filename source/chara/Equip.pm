@@ -43,6 +43,7 @@ sub Init{
    
     $header_list = [
                 "e_no",
+                "battle_type",
                 "artifact_id",
                 "equip_num",
                 "created_at",
@@ -67,8 +68,14 @@ sub GetData{
     
     $self->{ENo} = $e_no;
 
-    my $equip_node   = $self->GetEquipNode($table_nodes);
-    $self->GetEquipData($equip_node);
+    my $equip_pve_node   = $self->GetEquipNode($table_nodes, "装備1");
+    my $equip_pvp_node   = $self->GetEquipNode($table_nodes, "PvP装備1");
+    my $equip_tale_node   = $self->GetEquipNode($table_nodes, "物語戦1");
+    my $equip_challenge_node   = $self->GetEquipNode($table_nodes, "チャレ1");
+    $self->GetEquipData($equip_pve_node);
+    $self->GetEquipData($equip_pvp_node);
+    $self->GetEquipData($equip_tale_node);
+    $self->GetEquipData($equip_challenge_node);
     
     return;
 }
@@ -81,12 +88,13 @@ sub GetData{
 sub GetEquipNode{
     my $self  = shift;
     my $table_nodes = shift;
+    my $first_text = shift;
     
     foreach my $table_node (@$table_nodes) {
         my $th_nodes = &GetNode::GetNode_Tag("th", \$table_node);
         my $th0_text =  $$th_nodes[0]->as_text;
 
-        if ($th0_text eq "装備1") { return $table_node; }
+        if ($th0_text eq $first_text) { return $table_node; }
     }
     return;
 }
@@ -99,18 +107,34 @@ sub GetEquipNode{
 sub GetEquipData{
     my $self  = shift;
     my $equip_node = shift;
-    my ($equip_id, $equip_num) = (0, 0);
 
     my $equip_th_nodes = &GetNode::GetNode_Tag("th", \$equip_node);
 
     foreach my $node (@$equip_th_nodes) {
+        my ($equip_id, $equip_num, $battle_type) = (0, 0, -1);
         my $item =  $node->as_text;
 
-        if ($item =~ /装備(\d)/) {
+        if ($item =~ /^装備(\d)/) {
+            $battle_type = 0;
             $equip_num = $1;
-            $equip_id = $self->{CommonDatas}{ProperName}->GetOrAddId($node->right->as_text);
 
-            $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $equip_id, $equip_num, $self->{Date}) ));
+        } elsif ($item =~ /^PvP装備(\d)/) {
+            $battle_type = 1;
+            $equip_num = $1;
+
+        } elsif ($item =~ /物語戦(\d)/) {
+            $battle_type = 2;
+            $equip_num = $1;
+
+        } elsif ($item =~ /チャレ(\d)/) {
+            $battle_type = 3;
+            $equip_num = $1;
+
+        }
+
+        if ($equip_num > 0) {
+            $equip_id = $self->{CommonDatas}{ProperName}->GetOrAddId($node->right->as_text);
+            $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, ($self->{ENo}, $battle_type, $equip_id, $equip_num, $self->{Date}) ));
         }
     }
 
